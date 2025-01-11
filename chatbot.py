@@ -20,21 +20,12 @@ def getResponseFromModel(user_input):
         return "Sorry, something went wrong. Please try again later."
 
 # Streamlit UI setup
-st.set_page_config(page_title="Ahmad's Chatbot", page_icon="💬")
-st.markdown("<h1 style='text-align: center;'>🤖 Welcome to Ahmad's Chatbot</h1>", unsafe_allow_html=True)
+st.set_page_config(page_title="BablooGPT", page_icon="💬")
+st.markdown("<h1 style='text-align: center;'>🤖 Welcome to BablooGPT</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #888;'>Your AI assistant is here to help you! 🚀</p>", unsafe_allow_html=True)
 
 # Sidebar setup
-st.sidebar.image('Ahmad Ali.png', use_column_width=True)
-st.sidebar.header("**Ahmad Ali Rafique**")
-st.sidebar.write("AI & Machine Learning Expert")
 
-st.sidebar.header("Contact Information", divider='rainbow')
-st.sidebar.write("Feel free to reach out through the following")
-st.sidebar.write("[LinkedIn](https://www.linkedin.com/in/ahmad-ali-rafique/)")
-st.sidebar.write("[GitHub](https://github.com/Ahmad-Ali-Rafique/)")
-st.sidebar.write("[Email](mailto:arsbussiness786@gmail.com)")
-st.sidebar.write("Developed by Ahmad Ali Rafique", unsafe_allow_html=True)
 
 # Main content area
 st.markdown("## ✍️ Enter your query below:")
@@ -51,5 +42,4 @@ with st.form(key='chat_form', clear_on_submit=True):
         st.success(output)
 
 # Footer
-st.markdown("<hr>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Developed by 🧑🏻Ahmad Ali Rafique🧑🏻</p>", unsafe_allow_html=True)
+
