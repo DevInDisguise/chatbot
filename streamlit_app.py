@@ -8,12 +8,15 @@ genai.configure(api_key=GOOGLE_API_KEY)
 # Initialize the Gemini model
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-def getResponseFromModel(user_input):
+def getResponseFromModel(user_input, chat_history):
     """
-    This function sends the user's input to the Gemini model and returns the generated response.
+    Sends the user's input along with the chat history to the Gemini model
+    and returns the generated response.
     """
     try:
-        response = model.generate_content(user_input)
+        # Combine chat history for contextual input
+        full_input = "\n".join(chat_history + [f"User: {user_input}"])
+        response = model.generate_content(full_input)
         return response.text
     except Exception as e:
         st.error(f"An error occurred: {e}")
@@ -24,8 +27,9 @@ st.set_page_config(page_title="BablooGPT", page_icon="💬")
 st.markdown("<h1 style='text-align: center;'>🤖 Welcome to BablooGPT</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #888;'>Your AI assistant is here to help you! 🚀</p>", unsafe_allow_html=True)
 
-# Sidebar setup
-
+# Initialize session state for chat history
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []  # Stores conversation history
 
 # Main content area
 st.markdown("## ✍️ Enter your query below:")
@@ -37,9 +41,21 @@ with st.form(key='chat_form', clear_on_submit=True):
 
     if submit_button and user_input:
         with st.spinner("🤔 Thinking..."):
-            output = getResponseFromModel(user_input)
-        st.markdown("### 🤖 Chatbot's Response:")
-        st.success(output)
+            # Get response from the model with chat history
+            response = getResponseFromModel(user_input, st.session_state.chat_history)
+            
+            # Update chat history
+            st.session_state.chat_history.append(f"User: {user_input}")
+            st.session_state.chat_history.append(f"AI: {response}")
+        
+        # Display conversation
+        for i, message in enumerate(st.session_state.chat_history):
+            if "User" in message:
+                st.markdown(f"**{message}**")
+            else:
+                st.markdown(f"_{message}_")
 
-# Footer
-
+# Option to clear chat history
+if st.button("Clear Chat History"):
+    st.session_state.chat_history = []
+    st.success("Chat history cleared!")
